@@ -14,6 +14,7 @@ const PORT = 4000;
 // import all routes
 const registerRoute = require('./routes/userRoutes/register')
 const loginRoute = require('./routes/userRoutes/login')
+const logoutRoute = require('./routes/userRoutes/logout')
 const getUserRoute = require('./routes/userRoutes/getUser')
 
 
@@ -26,6 +27,7 @@ app.use(urlencoded({ extended: false }));
 // End points
 app.use('/',registerRoute);
 app.use('/',loginRoute);
+app.use('/',logoutRoute);
 app.use('/',getUserRoute);
 
 

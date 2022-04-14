@@ -22,18 +22,21 @@ module.exports = router.post('/api/register', userExist, async (req, res) => {
         // create user
         await User.create({email, password: hashedPass})
         .then((data) => {
+            const { _id, email } = data;
+            const accessToken = generateToken(_id, email);
             res.status(200).json({ 
                 data: {
-                    id: data._id,
-                    email: data.email,
-                    accessToken: generateToken(data._id),
+                    id: _id,
+                    email: email,
+                    accessToken,
                     status:true,
-                    message: 'successful',
+                    message: 'success',
                 }
             });
         })
         .catch(error => {
             res.status(400).json({
+                status: false,
                 message: 'Invalid credentials!'
             });
             console.log(error);
