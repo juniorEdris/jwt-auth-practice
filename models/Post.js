@@ -15,6 +15,9 @@ module.exports = mongoose.model(
       text: {
         type: String,
       },
+      imageName: {
+        type: String,
+      },
       createdAt: {
         type: Date,
       },

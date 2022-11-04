@@ -37,12 +37,13 @@ app.use((error, req, res, next) => {
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "./routes/utils/images");
+    cb(null, "../social-crud-app/public/images");
   },
   filename: function (req, file, cb) {
     // C:\Users\user\Documents\GitHub\jwt-auth-practice\routes\utils\images
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    const fileExt = file.originalname.split(".")[1];
-    cb(null, Date.now() + "-" + uniqueSuffix + "." + fileExt);
+    const uniqueSuffix = Date.now() + "_" + Math.round(Math.random() * 1e9);
+    const fileName = file.originalname.split(".");
+    cb(null, fileName[0] + "_" + uniqueSuffix + "." + fileName[1]);
   },
 });
 const upload = multer({ storage: storage }).single("file");

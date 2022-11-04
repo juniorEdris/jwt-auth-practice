@@ -7,11 +7,11 @@ module.exports = router.post(
   "/api/create/post",
   authMiddleware,
   async (req, res) => {
-    const { text = "" } = req.body;
+    const { text = "", imageName } = req.body;
     const { _id, userName } = req.user;
 
     // create Post
-    await Post.create({ userId: _id, userName, text })
+    await Post.create({ userId: _id, userName, text, imageName })
       .then((data) => {
         if (data) {
           res.status(200).json({
