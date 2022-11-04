@@ -7,7 +7,7 @@ const { generateToken } = require("../../../utils");
 const router = express.Router();
 
 module.exports = router.post("/api/register", userExist, async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, userName } = req.body;
   if (!email || !password) {
     res.status(400).json({
       message: "Please add fields",
@@ -19,19 +19,24 @@ module.exports = router.post("/api/register", userExist, async (req, res) => {
     const hashedPass = await bcrypt.hash(password, salt);
 
     // create user
-    await User.create({ email, password: hashedPass })
+    await User.create({ email, password: hashedPass, userName })
       .then((data) => {
-        const { _id, email } = data;
+        const { _id, email, userName } = data;
         const accessToken = generateToken(_id, email);
-        res.status(200).json({
-          data: {
-            id: _id,
-            email: email,
-            accessToken,
-            status: true,
-            message: "success",
-          },
-        });
+        res
+          .cookie("accessToken", accessToken, {
+            httpOnly: true,
+          })
+          .status(200)
+          .json({
+            data: {
+              id: _id,
+              email: email,
+              user: userName,
+              status: true,
+              message: "success",
+            },
+          });
       })
       .catch((error) => {
         res.status(400).json({

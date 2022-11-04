@@ -29,15 +29,19 @@ module.exports = router.post("/api/login", async (req, res) => {
 
     // get user
     if (user && decodedPassword) {
-      res.status(200).json({
-        data: {
-          id: user._id,
-          email: user.email,
-          status: true,
-          message: "successful",
-          accessToken,
-        },
-      });
+      res
+        .cookie("accessToken", accessToken, {
+          httpOnly: true,
+        })
+        .status(200)
+        .json({
+          data: {
+            id: user._id,
+            email: user.email,
+            status: true,
+            message: "successful",
+          },
+        });
     } else {
       res.status(400).json({
         data: {
