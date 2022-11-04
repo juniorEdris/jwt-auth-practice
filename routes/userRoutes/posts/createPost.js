@@ -11,10 +11,9 @@ module.exports = router.post(
     const { _id, userName } = req.user;
 
     // create Post
-    const createdPost = await Post.create({ userId: _id, userName, text })
+    await Post.create({ userId: _id, userName, text })
       .then((data) => {
         if (data) {
-          console.log({ postC: data });
           res.status(200).json({
             data: {
               status: true,
