@@ -3,13 +3,10 @@ const User = require("../models/User");
 
 module.exports = async (req, res, next) => {
   let token;
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
-  ) {
+  if (req.headers.cookie && req.headers.cookie.startsWith("accessToken")) {
     try {
       // Get the token
-      token = req.headers.authorization.split(" ")[1];
+      token = req.headers.cookie.split("=")[1];
 
       // Verify token
       const decoded = jwt.verify(token, "damnHot"); // JWT_SECRET

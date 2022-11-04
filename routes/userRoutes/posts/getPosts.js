@@ -1,5 +1,4 @@
 const express = require("express");
-const authMiddleware = require("../../../middleware/authMiddleware");
 const Post = require("../../../models/Post");
 const router = express.Router();
 
@@ -7,7 +6,7 @@ module.exports = router.get("/api/posts", async (req, res) => {
   const user = req.user;
 
   // check user
-  const data = await Post.find();
+  const data = await Post.find().sort({ createdAt: -1 });
 
   // get user
   if (data) {
