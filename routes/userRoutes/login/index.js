@@ -16,37 +16,44 @@ module.exports = router.post("/api/login", async (req, res) => {
   } else {
     // check user
     const user = await User.findOne({ email: email.replaceAll(" ", "") });
-    // Hash password
-    const salt = await bcrypt.genSalt(10);
-    const decodedPassword = await bcrypt.compareSync(
-      password,
-      user.password,
-      salt
-    );
-
-    // generate token
-    const accessToken = generateToken(user._id, user.email);
-
-    // get user
-    if (user && decodedPassword) {
-      res
-        .cookie("accessToken", accessToken, {
-          httpOnly: true,
-        })
-        .status(200)
-        .json({
+    if (user) {
+      // Hash password
+      const salt = await bcrypt.genSalt(10);
+      const decodedPassword = await bcrypt.compareSync(
+        password,
+        user.password,
+        salt
+      );
+      // generate token
+      const accessToken = generateToken(user._id, user.email);
+      // get user
+      if (user && decodedPassword) {
+        res
+          .cookie("accessToken", accessToken, {
+            httpOnly: true,
+          })
+          .status(200)
+          .json({
+            data: {
+              id: user._id,
+              email: user.email,
+              status: true,
+              message: "successful",
+            },
+          });
+      } else {
+        res.status(400).json({
           data: {
-            id: user._id,
-            email: user.email,
-            status: true,
-            message: "successful",
+            status: false,
+            message: "Invalid credentials!",
           },
         });
+      }
     } else {
       res.status(400).json({
         data: {
           status: false,
-          message: "Invalid credentials!",
+          message: "No user found!",
         },
       });
     }
