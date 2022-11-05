@@ -19,9 +19,9 @@ module.exports = router.post("/api/register", userExist, async (req, res) => {
     const hashedPass = await bcrypt.hash(password, salt);
 
     // create user
-    await User.create({ email, password: hashedPass, userName })
+    await User.create({ email, password: hashedPass, userName, userImage: "" })
       .then((data) => {
-        const { _id, email, userName } = data;
+        const { _id, email } = data;
         const accessToken = generateToken(_id, email);
         res
           .cookie("accessToken", accessToken, {
@@ -32,7 +32,12 @@ module.exports = router.post("/api/register", userExist, async (req, res) => {
             data: {
               id: _id,
               email: email,
-              user: userName,
+              user: {
+                id: data?._id,
+                name: data?.userName,
+                email: data?.email,
+                profileImage: data?.userImage,
+              },
               status: true,
               message: "success",
             },

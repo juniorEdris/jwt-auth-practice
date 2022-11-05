@@ -1,6 +1,5 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
-const jsonwebToken = require("jsonwebtoken");
 const User = require("../../../models/User");
 const { generateToken } = require("../../../utils");
 const router = express.Router();
@@ -15,7 +14,9 @@ module.exports = router.post("/api/login", async (req, res) => {
     // throw new Error('Please add fields');
   } else {
     // check user
-    const user = await User.findOne({ email: email.replaceAll(" ", "") });
+    const user = await User.findOne({
+      email: email.replaceAll(" ", ""),
+    });
     if (user) {
       // Hash password
       const salt = await bcrypt.genSalt(10);
@@ -35,8 +36,12 @@ module.exports = router.post("/api/login", async (req, res) => {
           .status(200)
           .json({
             data: {
-              id: user._id,
-              email: user.email,
+              user: {
+                id: user._id,
+                name: user.userName,
+                email: user.email,
+                profileImage: user.userImage,
+              },
               status: true,
               message: "successful",
             },
