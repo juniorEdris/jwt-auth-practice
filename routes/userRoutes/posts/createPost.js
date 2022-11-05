@@ -8,10 +8,16 @@ module.exports = router.post(
   authMiddleware,
   async (req, res) => {
     const { text = "", imageName } = req.body;
-    const { _id, userName } = req.user;
+    const { _id, userName, userImage } = req.user;
 
     // create Post
-    await Post.create({ userId: _id, userName, text, imageName })
+    await Post.create({
+      userId: _id,
+      userImage,
+      userName,
+      text,
+      imageName,
+    })
       .then((data) => {
         if (data) {
           res.status(200).json({

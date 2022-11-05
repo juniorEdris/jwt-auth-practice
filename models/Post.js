@@ -8,6 +8,9 @@ module.exports = mongoose.model(
         type: String,
         required: [true, "Please provide an user"],
       },
+      userImage: {
+        type: String,
+      },
       userName: {
         type: String,
         required: [true, "Please provide an user"],

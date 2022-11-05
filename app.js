@@ -69,14 +69,11 @@ app.use("/", getPosts);
 app.post("/api/upload", authMiddleware, (req, res) => {
   try {
     upload(req, res, (err) => {
-      console.log({ fileErr: req.fileSizeErr });
       if (!err) {
         res
           .status(200)
           .json({ message: "Success", status: true, file: req.file.filename });
       }
-
-      console.log({ err });
     });
   } catch (error) {
     console.log({ error });
