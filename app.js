@@ -21,6 +21,7 @@ const cookieParser = require("cookie-parser");
 const createPost = require("./routes/userRoutes/posts/createPost");
 const getPosts = require("./routes/userRoutes/posts/getPosts");
 const uploadImage = require("./routes/userRoutes/uploadImage");
+const authMiddleware = require("./middleware/authMiddleware");
 
 // Allow cross-origin request
 app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
@@ -35,18 +36,27 @@ app.use((error, req, res, next) => {
 
 // storage for image upload.
 const storage = multer.diskStorage({
+  fileFilter: function (req, file, cb) {
+    // doesnot work
+    if (Number(req.headers["content-length"]) < 10000) {
+      cb(null, true);
+    }
+  },
   destination: function (req, file, cb) {
-    cb(null, "./routes/utils/images");
     cb(null, "../social-crud-app/public/images");
   },
   filename: function (req, file, cb) {
-    // C:\Users\user\Documents\GitHub\jwt-auth-practice\routes\utils\images
-    const uniqueSuffix = Date.now() + "_" + Math.round(Math.random() * 1e9);
     const fileName = file.originalname.split(".");
-    cb(null, fileName[0] + "_" + uniqueSuffix + "." + fileName[1]);
+    const uniqueSuffix = `${Date.now()}_${Math.round(
+      Math.random() * 1e9
+    )}_social_crud.${fileName[1]}`;
+    cb(null, uniqueSuffix);
   },
 });
-const upload = multer({ storage: storage }).single("file");
+const upload = multer({
+  storage: storage,
+  // limits: { fileSize: 1 * 1000 * 1000 },
+}).single("file");
 
 // End points
 app.use("/", registerRoute);
@@ -56,15 +66,22 @@ app.use("/", getUserRoute);
 app.use("/", createPost);
 app.use("/", getPosts);
 // upload image
-app.post("/api/upload", (req, res) => {
-  upload(req, res, (err) => {
-    if (err) {
-      res.status(400).json({ message: "Something went wrong!", status: false });
-    }
-    res
-      .status(200)
-      .json({ message: "Success", status: true, file: req.file.filename });
-  });
+app.post("/api/upload", authMiddleware, (req, res) => {
+  try {
+    upload(req, res, (err) => {
+      console.log({ fileErr: req.fileSizeErr });
+      if (!err) {
+        res
+          .status(200)
+          .json({ message: "Success", status: true, file: req.file.filename });
+      }
+
+      console.log({ err });
+    });
+  } catch (error) {
+    console.log({ error });
+    res.status(400).json({ message: "Image upload failed!", status: false });
+  }
 });
 
 app.listen(PORT, () => {
