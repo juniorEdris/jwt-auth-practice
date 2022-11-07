@@ -12,6 +12,8 @@ connectToDB(mongodburl);
 const app = express();
 const PORT = 4000;
 
+app.use(express.static("build"));
+
 // import all routes
 const registerRoute = require("./routes/userRoutes/register");
 const loginRoute = require("./routes/userRoutes/login");
