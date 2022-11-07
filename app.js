@@ -22,6 +22,8 @@ const createPost = require("./routes/userRoutes/posts/createPost");
 const getPosts = require("./routes/userRoutes/posts/getPosts");
 const uploadImage = require("./routes/userRoutes/uploadImage");
 const authMiddleware = require("./middleware/authMiddleware");
+const getComments = require("./routes/userRoutes/comments/getComments");
+const createComment = require("./routes/userRoutes/comments/createComment");
 
 // Allow cross-origin request
 app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
@@ -65,6 +67,8 @@ app.use("/", logoutRoute);
 app.use("/", getUserRoute);
 app.use("/", createPost);
 app.use("/", getPosts);
+app.use("/", getComments);
+app.use("/", createComment);
 // upload image
 app.post("/api/upload", authMiddleware, (req, res) => {
   try {

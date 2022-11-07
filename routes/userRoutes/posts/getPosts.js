@@ -6,7 +6,10 @@ module.exports = router.get("/api/posts", async (req, res) => {
   const user = req.user;
 
   // check user
-  const data = await Post.find().sort({ createdAt: -1 });
+  const data = await Post.find({}).sort({ createdAt: -1 });
+  // const data2 = await Post.aggregate([{$lookup:{
+  //   from: "Comments"
+  // }}]);
 
   // get user
   if (data) {
