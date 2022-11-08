@@ -2,15 +2,20 @@ const express = require("express");
 const cors = require("cors");
 const { urlencoded } = require("body-parser");
 const multer = require("multer");
+const dotenv = require("dotenv");
 
 // Database import
 const connectToDB = require("./config/db");
 
-const mongodburl = `mongodb://localhost:27017/auth`;
+const mongodburl = `${
+  process.env.MONGO_URI ||
+  "mongodb+srv://jr_edris:CMdkMK8OV10nXtkm@eftekar01.0nnjt.mongodb.net"
+}/?retryWrites=true&w=majority`; //`mongodb://localhost:27017/auth`;
 connectToDB(mongodburl);
 
 const app = express();
-const PORT = 4000;
+const PORT = process.env.NODE_LOCALHOST || 4000;
+dotenv.config();
 
 app.use(express.static("build"));
 
@@ -47,7 +52,8 @@ const storage = multer.diskStorage({
     }
   },
   destination: function (req, file, cb) {
-    cb(null, "../social-crud-app/public/images");
+    cb(null, "./build/images");
+    // cb(null, "../social-crud-app/public/images");
   },
   filename: function (req, file, cb) {
     const fileName = file.originalname.split(".");
