@@ -33,14 +33,15 @@ const getComments = require("./routes/userRoutes/comments/getComments");
 const createComment = require("./routes/userRoutes/comments/createComment");
 
 // Allow cross-origin request
+// origin: [
+//   // "https://jwt-auth-practice.vercel.app",
+//   // "http://localhost:3000",
+//   "http://localhost:4000",
+// ],
 app.use(
   cors({
     credentials: true,
-    origin: [
-      "https://jwt-auth-practice.vercel.app",
-      "http://localhost:3000",
-      "http://localhost:4000",
-    ],
+    origin: "https://jwt-auth-practice.vercel.app",
   })
 );
 app.use(express.json());
@@ -50,7 +51,7 @@ app.use(cookieParser());
 // storage for image upload.
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, `./build/images/`);
+    cb(null, `./build/images`);
     // cb(null, "../social-crud-app/public/images");
   },
   filename: function (req, file, cb) {
