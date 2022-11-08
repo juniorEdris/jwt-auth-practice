@@ -50,14 +50,8 @@ app.use((error, req, res, next) => {
 
 // storage for image upload.
 const storage = multer.diskStorage({
-  fileFilter: function (req, file, cb) {
-    // doesnot work
-    if (Number(req.headers["content-length"]) < 10000) {
-      cb(null, true);
-    }
-  },
   destination: function (req, file, cb) {
-    cb(null, `${__dirname}/build/images/`);
+    cb(null, `./build/images/`);
     // cb(null, "../social-crud-app/public/images");
   },
   filename: function (req, file, cb) {
@@ -70,7 +64,19 @@ const storage = multer.diskStorage({
 });
 const upload = multer({
   storage: storage,
-  // limits: { fileSize: 1 * 1000 * 1000 },
+  limits: { fileSize: 1 * 1000 * 1000 },
+  fileFilter: function (req, file, cb) {
+    // if (Number(req.headers["content-length"]) < 10000) {
+    if (
+      file.mimetype === "image/png" ||
+      file.mimetype === "image/jpg" ||
+      file.mimetype === "image/jpeg"
+    ) {
+      cb(null, true);
+    } else {
+      cb(new Error("Only, jpg, jpeg, png format is allowed."));
+    }
+  },
 }).single("file");
 
 // End points
@@ -86,15 +92,17 @@ app.use("/", createComment);
 app.post("/api/upload", authMiddleware, (req, res) => {
   try {
     upload(req, res, (err) => {
-      if (!err) {
-        res
-          .status(200)
-          .json({ message: "Success", status: true, file: req.file.filename });
-      }
+      res
+        .status(200)
+        .json({ message: "Success", status: true, file: req.file.filename });
     });
   } catch (error) {
     console.log({ error });
-    res.status(400).json({ message: "Image upload failed!", status: false });
+    if (error instanceof multer.MulterError) {
+      return res.status(500).json({ message: "Upload failed!", status: false });
+    } else {
+      res.status(500).json({ message: "Image upload failed!", status: false });
+    }
   }
 });
 
