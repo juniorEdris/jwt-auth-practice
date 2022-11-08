@@ -2,20 +2,16 @@ const express = require("express");
 const cors = require("cors");
 const { urlencoded } = require("body-parser");
 const multer = require("multer");
-const dotenv = require("dotenv");
+require("dotenv").config();
 
 // Database import
 const connectToDB = require("./config/db");
 
-const mongodburl = `${
-  process.env.MONGO_URI ||
-  "mongodb+srv://jr_edris:CMdkMK8OV10nXtkm@eftekar01.0nnjt.mongodb.net"
-}/?retryWrites=true&w=majority`; //`mongodb://localhost:27017/auth`;
+const mongodburl = `${process.env.MONGO_URI}/?retryWrites=true&w=majority`;
 connectToDB(mongodburl);
 
 const app = express();
-const PORT = process.env.NODE_LOCALHOST || 4000;
-dotenv.config();
+const PORT = process.env.NODE_LOCALHOST;
 
 app.use(express.static("build"));
 
@@ -31,17 +27,19 @@ const uploadImage = require("./routes/userRoutes/uploadImage");
 const authMiddleware = require("./middleware/authMiddleware");
 const getComments = require("./routes/userRoutes/comments/getComments");
 const createComment = require("./routes/userRoutes/comments/createComment");
+const deletePost = require("./routes/userRoutes/posts/deletePost");
 
 // Allow cross-origin request
-// origin: [
-//   // "https://jwt-auth-practice.vercel.app",
-//   // "http://localhost:3000",
-//   "http://localhost:4000",
-// ],
+/**
+ * LOCAL_URL
+SERVER_URL
+HOSTED_URL
+ * 
+ */
 app.use(
   cors({
     credentials: true,
-    origin: "https://jwt-auth-practice.vercel.app",
+    origin: process.env.HOSTED_URL,
   })
 );
 app.use(express.json());
@@ -85,6 +83,7 @@ app.use("/", loginRoute);
 app.use("/", logoutRoute);
 app.use("/", getUserRoute);
 app.use("/", createPost);
+app.use("/", deletePost);
 app.use("/", getPosts);
 app.use("/", getComments);
 app.use("/", createComment);

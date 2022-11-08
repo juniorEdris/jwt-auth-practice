@@ -4,26 +4,19 @@ const Post = require("../../../models/Post");
 const router = express.Router();
 
 module.exports = router.post(
-  "/api/create/post",
+  "/api/delete/post/:id",
   authMiddleware,
   async (req, res) => {
     try {
-      const { text = "", imageName } = req.body;
-      const { _id, userName, userImage } = req.user;
+      const { id } = req.params;
 
       // create Post
-      await Post.create({
-        userId: _id,
-        userImage,
-        userName,
-        text,
-        imageName,
-      }).then((data) => {
+      await Post.deleteOne({ _id: id }).then((data) => {
         if (data) {
           res.status(200).json({
             data: {
               status: true,
-              message: "post created",
+              message: "Post deleted successfully!",
             },
           });
         }
@@ -33,7 +26,7 @@ module.exports = router.post(
       res.status(400).json({
         data: {
           status: false,
-          message: "post created unsuccessful!",
+          message: "Post delete unsuccessful!",
         },
       });
     }
