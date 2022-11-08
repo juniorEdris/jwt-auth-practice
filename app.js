@@ -36,17 +36,16 @@ const createComment = require("./routes/userRoutes/comments/createComment");
 app.use(
   cors({
     credentials: true,
-    origin: ["https://jwt-auth-practice.vercel.app", "http://localhost:3000"],
+    origin: [
+      "https://jwt-auth-practice.vercel.app",
+      "http://localhost:3000",
+      "http://localhost:4000",
+    ],
   })
 );
 app.use(express.json());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
-
-// Logging the rejected field from multer error
-app.use((error, req, res, next) => {
-  console.log("This is the rejected field ->", error.field);
-});
 
 // storage for image upload.
 const storage = multer.diskStorage({
@@ -77,7 +76,7 @@ const upload = multer({
       cb(new Error("Only, jpg, jpeg, png format is allowed."));
     }
   },
-}).single("file");
+});
 
 // End points
 app.use("/", registerRoute);
@@ -89,13 +88,25 @@ app.use("/", getPosts);
 app.use("/", getComments);
 app.use("/", createComment);
 // upload image
-app.post("/api/upload", authMiddleware, (req, res) => {
+// app.post("/api/upload", authMiddleware, (req, res) => {
+//   try {
+//     upload(req, res, (err) => {
+//       res
+//         .status(200)
+//         .json({ message: "Success", status: true, file: req.file.filename });
+//     });
+//   } catch (error) {
+//     console.log({ error });
+//     if (error instanceof multer.MulterError) {
+//       return res.status(500).json({ message: "Upload failed!", status: false });
+//     } else {
+//       res.status(500).json({ message: "Image upload failed!", status: false });
+//     }
+//   }
+// });
+app.post("/api/upload", authMiddleware, upload.single("file"), (req, res) => {
   try {
-    upload(req, res, (err) => {
-      res
-        .status(200)
-        .json({ message: "Success", status: true, file: req.file.filename });
-    });
+    return res.status(200).json({ message: "Success", status: true });
   } catch (error) {
     console.log({ error });
     if (error instanceof multer.MulterError) {
