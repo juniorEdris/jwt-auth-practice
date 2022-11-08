@@ -36,7 +36,7 @@ const createComment = require("./routes/userRoutes/comments/createComment");
 app.use(
   cors({
     credentials: true,
-    origin: ["https://jwt-auth-practice.vercel.app", "http://localhost:3000/"],
+    origin: ["https://jwt-auth-practice.vercel.app", "http://localhost:3000"],
   })
 );
 app.use(express.json());
