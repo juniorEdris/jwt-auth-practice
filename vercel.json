@@ -1,9 +1,27 @@
 {
   "version": 2,
-  "name": "social-media",
   "builds": [
-    { "src": "./app.js", "use": "@vercel/node" },
-    { "src": "./build", "use": "@vercel/node" }
+      {
+          "src": "app.js",
+          "use": "@vercel/node"
+      },
+      {
+          "src": "build/**",
+          "use": "@vercel/static"
+      }
   ],
-  "routes": [{ "src": "/(.*)", "dest": "/app.js" }]
+  "routes":[
+      {
+          "src": "/api/(.*)",
+          "dest": "app.js"
+      },
+      {
+          "src": "/",
+          "dest": "build/index.html"
+      },
+      {
+          "src": "/(.+)",
+          "dest": "build/$1"
+      }
+  ]
 }
