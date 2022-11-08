@@ -34,7 +34,10 @@ const createComment = require("./routes/userRoutes/comments/createComment");
 
 // Allow cross-origin request
 app.use(
-  cors({ credentials: true, origin: "https://jwt-auth-practice.vercel.app" })
+  cors({
+    credentials: true,
+    origin: ["https://jwt-auth-practice.vercel.app", "http://localhost:3000/"],
+  })
 );
 app.use(express.json());
 app.use(urlencoded({ extended: false }));
