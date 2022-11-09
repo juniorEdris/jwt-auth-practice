@@ -28,13 +28,12 @@ const authMiddleware = require("./middleware/authMiddleware");
 const getComments = require("./routes/userRoutes/comments/getComments");
 const createComment = require("./routes/userRoutes/comments/createComment");
 const deletePost = require("./routes/userRoutes/posts/deletePost");
+const { default: mongoose } = require("mongoose");
 
 // Allow cross-origin request
 /**
- * LOCAL_URL
-SERVER_URL
-HOSTED_URL
- * 
+ * Change URL in env file
+ *
  */
 app.use(
   cors({
@@ -117,8 +116,11 @@ app.post("/api/upload", authMiddleware, upload.single("file"), (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server started at localhost:${PORT}`);
+mongoose.connection.once("open", () => {
+  console.log(`Connected To MongoDB`);
+  app.listen(PORT, () => {
+    console.log(`Server started at localhost:${PORT}`);
+  });
 });
 
 module.exports = app;
