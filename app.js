@@ -43,6 +43,8 @@ app.use(
   })
 );
 
+console.log(serverURL);
+
 app.use(express.json());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
