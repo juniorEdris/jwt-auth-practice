@@ -1,9 +1,14 @@
-const jwt = require('jsonwebtoken');
-const JWT_SECRET = 'damnHot'
+const jwt = require("jsonwebtoken");
 
-// henerate JWT 
+// generate JWT
 exports.generateToken = (id, email) => {
-    return jwt.sign({ id, user_email: email }, JWT_SECRET, {
-        expiresIn: '30d'
-    });
-}
+  return jwt.sign({ id, user_email: email }, process.env.ACCESS_TOKEN_SECRET, {
+    expiresIn: "30d",
+  });
+};
+// generate JWT
+exports.generateRefreshToken = (id, email) => {
+  return jwt.sign({ id, user_email: email }, process.env.REFRESH_TOKEN_SECRET, {
+    expiresIn: "30d",
+  });
+};

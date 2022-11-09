@@ -9,7 +9,7 @@ module.exports = async (req, res, next) => {
       token = req.headers.cookie.split("=")[1];
 
       // Verify token
-      const decoded = jwt.verify(token, "damnHot"); // JWT_SECRET
+      const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET); // JWT_SECRET
 
       // Get user id from the token
       req.user = await User.findById(decoded.id).select("-password"); // deselect password
