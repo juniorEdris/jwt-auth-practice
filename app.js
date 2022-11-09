@@ -31,16 +31,17 @@ const deletePost = require("./routes/userRoutes/posts/deletePost");
 const { default: mongoose } = require("mongoose");
 
 // Allow cross-origin request
-/**
- * Change URL in env file
- *
- */
+const serverURL =
+  process.env.NODE_APP_MODE === "development"
+    ? process.env.LOCAL_URL
+    : process.env.HOSTED_URL;
 app.use(
   cors({
     credentials: true,
-    origin: process.env.HOSTED_URL,
+    origin: serverURL,
   })
 );
+
 app.use(express.json());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
