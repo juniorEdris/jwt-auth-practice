@@ -32,9 +32,10 @@ const { default: mongoose } = require("mongoose");
 
 // Allow cross-origin request
 const serverURL =
-  process.env.NODE_APP_MODE === "development"
-    ? process.env.LOCAL_URL
-    : process.env.HOSTED_URL;
+  process.env.NODE_APP_MODE === "production"
+    ? process.env.HOSTED_URL
+    : process.env.LOCAL_URL;
+
 app.use(
   cors({
     credentials: true,
