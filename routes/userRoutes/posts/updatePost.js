@@ -31,7 +31,7 @@ module.exports = router.post(
           }
         });
       } else {
-        return res.status(400).json({
+        return res.status(401).json({
           data: {
             status: true,
             message: "Post update unsuccessfully!",

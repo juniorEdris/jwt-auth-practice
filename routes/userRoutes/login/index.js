@@ -47,7 +47,7 @@ module.exports = router.post("/api/login", async (req, res) => {
             },
           });
       } else {
-        res.status(400).json({
+        res.status(401).json({
           data: {
             status: false,
             message: "Invalid credentials!",
@@ -55,7 +55,7 @@ module.exports = router.post("/api/login", async (req, res) => {
         });
       }
     } else {
-      res.status(400).json({
+      res.status(401).json({
         data: {
           status: false,
           message: "No user found!",

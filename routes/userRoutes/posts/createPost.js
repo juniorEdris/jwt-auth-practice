@@ -30,7 +30,7 @@ module.exports = router.post(
       });
     } catch (error) {
       console.log(error);
-      res.status(400).json({
+      res.status(401).json({
         data: {
           status: false,
           message: "post created unsuccessful!",
