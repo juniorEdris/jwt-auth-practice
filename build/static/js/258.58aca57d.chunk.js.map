@@ -1,0 +1,1 @@
+{"version":3,"file":"static/js/258.58aca57d.chunk.js","mappings":"mJAMA,UAJgB,WACd,OAAO,oDACT,C","sources":["component/Profile/index.js"],"sourcesContent":["import React from \"react\";\r\n\r\nconst Profile = () => {\r\n  return <div>Protected Route Profile</div>;\r\n};\r\n\r\nexport default Profile;\r\n"],"names":[],"sourceRoot":""}

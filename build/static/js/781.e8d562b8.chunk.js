@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunksocial_crud_app=self.webpackChunksocial_crud_app||[]).push([[781],{781:function(u,c,a){a.r(c);a(2791);var e=a(184);c.default=function(){return(0,e.jsx)("div",{children:"About page"})}}}]);
+//# sourceMappingURL=781.e8d562b8.chunk.js.map
