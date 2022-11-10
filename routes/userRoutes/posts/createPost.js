@@ -14,10 +14,10 @@ module.exports = router.post(
       // create Post
       await Post.create({
         userId: _id,
-        userImage,
-        userName,
-        text,
-        imageName,
+        userImage: userImage.toString(),
+        userName: userName.toString(),
+        text: text.toString(),
+        imageName: imageName.toString(),
       }).then((data) => {
         if (data) {
           res.status(200).json({

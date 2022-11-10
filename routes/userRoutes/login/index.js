@@ -8,20 +8,20 @@ module.exports = router.post("/api/login", async (req, res) => {
   const { email, password, userPassword } = req.body;
 
   if (!email || !password) {
-    res.status(400).json({
+    res.status(401).json({
       message: "Please add all the fields!",
     });
     // throw new Error('Please add fields');
   } else {
     // check user
     const user = await User.findOne({
-      email: email.replaceAll(" ", ""),
+      email: email.toString().replaceAll(" ", ""),
     });
     if (user) {
       // Hash password
       const salt = await bcrypt.genSalt(10);
       const decodedPassword = await bcrypt.compareSync(
-        password,
+        password.toString(),
         user.password,
         salt
       );

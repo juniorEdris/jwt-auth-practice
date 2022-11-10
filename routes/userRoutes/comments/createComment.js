@@ -18,10 +18,10 @@ module.exports = router.post(
       // create comment
       if (postIsActive) {
         await Comments.create({
-          comment,
-          userId,
-          userImage,
-          userName,
+          comment: comment.toString(),
+          userId: userId.toString(),
+          userImage: userImage.toString(),
+          userName: userName.toString(),
           postId,
         });
 

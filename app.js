@@ -29,6 +29,7 @@ const getComments = require("./routes/userRoutes/comments/getComments");
 const createComment = require("./routes/userRoutes/comments/createComment");
 const deletePost = require("./routes/userRoutes/posts/deletePost");
 const { default: mongoose } = require("mongoose");
+const updatePost = require("./routes/userRoutes/posts/updatePost");
 
 // Allow cross-origin request
 const serverURL =
@@ -87,6 +88,7 @@ app.use("/", logoutRoute);
 app.use("/", getUserRoute);
 app.use("/", createPost);
 app.use("/", deletePost);
+app.use("/", updatePost);
 app.use("/", getPosts);
 app.use("/", getComments);
 app.use("/", createComment);
